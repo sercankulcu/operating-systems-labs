@@ -89,35 +89,49 @@ void multiQueueScheduling(struct Queue *queues, int num_queues, int quantum) {
 }
 
 int main() {
+
+    // Number of processes
+    int n = 5;
+
+    // Array to store processes
+    struct Process processes[n];
+
     // Number of queues and time quantum
-    int num_queues, quantum;
-
-    printf("Enter the number of queues: ");
-    scanf("%d", &num_queues);
-
-    printf("Enter time quantum: ");
-    scanf("%d", &quantum);
+    int num_queues = 3;
+    int quantum = 2;
 
     // Initialize queues
     struct Queue queues[num_queues];
-    for (int i = 0; i < num_queues; i++)
-        initQueue(&queues[i]);
-
-    // Input processes for each queue
     for (int i = 0; i < num_queues; i++) {
-        int num_processes;
-        printf("Enter the number of processes in Queue %d: ", i + 1);
-        scanf("%d", &num_processes);
-
-        printf("Enter burst time and priority for each process in Queue %d:\n", i + 1);
-        for (int j = 0; j < num_processes; j++) {
-            struct Process p;
-            printf("Process %d: ", j + 1);
-            p.id = j + 1;
-            scanf("%d %d", &p.burst, &p.priority);
-            enqueue(&queues[i], &p);
-        }
+        initQueue(&queues[i]);
     }
+
+    // Input process details
+    processes[0].id = 1;
+    processes[0].burst = 10;
+    processes[0].priority = 1;
+    processes[0].completed = 0;
+    enqueue(&queues[0], &processes[0]);
+    processes[1].id = 2;
+    processes[1].burst = 8;
+    processes[1].priority = 2;
+    processes[1].completed = 0;
+    enqueue(&queues[1], &processes[1]);
+    processes[2].id = 3;
+    processes[2].burst = 6;
+    processes[2].priority = 5;
+    processes[2].completed = 0;
+    enqueue(&queues[2], &processes[2]);
+    processes[3].id = 4;
+    processes[3].burst = 4;
+    processes[3].priority = 3;
+    processes[3].completed = 0;
+    enqueue(&queues[0], &processes[3]);
+    processes[4].id = 5;
+    processes[4].burst = 2;
+    processes[4].priority = 4;
+    processes[4].completed = 0;
+    enqueue(&queues[1], &processes[4]);
 
     // Perform Multiple Queues Scheduling
     printf("Sequence of processes execution:\n");

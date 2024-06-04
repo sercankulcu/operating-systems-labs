@@ -3,9 +3,9 @@
 #include <stdlib.h>
 
 // Function to find the index of the page that will not be used for the longest period of time in the future
-int findOptimalPage(int pages[], int frames[], int n, int current) {
+int findOptimalPage(int pages[], int frames[], int n, int capacity, int current) {
     int index = -1, farthest = current;
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < capacity; i++) {
         int j;
         for (j = current; j < n; j++) {
             if (frames[i] == pages[j]) {
@@ -43,7 +43,7 @@ void optimalPageReplacement(int pages[], int n, int capacity) {
 
         // If page is not in frames, replace page with optimal choice
         if (isPageFault) {
-            int index = findOptimalPage(pages, frames, n, i + 1);
+            int index = findOptimalPage(pages, frames, n, capacity, i + 1);
             frames[index] = pages[i];
             pageFaults++;
         }
@@ -63,9 +63,9 @@ void optimalPageReplacement(int pages[], int n, int capacity) {
 }
 
 int main() {
-    int referenceString[] = {7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2};
+    int referenceString[] = {7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2, 1, 2, 0, 1, 7, 0, 1};
     int n = sizeof(referenceString) / sizeof(referenceString[0]);
-    int capacity = 4; // Number of frames in memory
+    int capacity = 3; // Number of frames in memory
 
     printf("Optimal Page Replacement Simulation:\n");
     optimalPageReplacement(referenceString, n, capacity);

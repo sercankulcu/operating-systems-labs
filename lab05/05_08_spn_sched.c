@@ -49,21 +49,39 @@ void spnScheduling(struct Process processes[], int n) {
 
 int main() {
     // Number of processes
-    int n;
-
-    printf("Enter the number of processes: ");
-    scanf("%d", &n);
+    int n = 5;
 
     // Array to store processes
     struct Process processes[n];
 
     // Input process details
-    printf("Enter burst time and arrival time for each process:\n");
+    processes[0].id = 1;
+    processes[0].burst = 10;
+    processes[0].arrival = 1;
+    processes[0].completed = 0;
+    processes[1].id = 2;
+    processes[1].burst = 8;
+    processes[1].arrival = 2;
+    processes[1].completed = 0;
+    processes[2].id = 3;
+    processes[2].burst = 6;
+    processes[2].arrival = 3;
+    processes[2].completed = 0;
+    processes[3].id = 4;
+    processes[3].burst = 4;
+    processes[3].arrival = 4;
+    processes[3].completed = 0;
+    processes[4].id = 5;
+    processes[4].burst = 2;
+    processes[4].arrival = 5;
+    processes[4].completed = 0;
+
+    // Display processes along with all details
+    printf("Process\t\tBurst Time\tArrival Time\n");
+
+    // Calculate total waiting time and turnaround time
     for (int i = 0; i < n; i++) {
-        printf("Process %d: ", i + 1);
-        processes[i].id = i + 1;
-        scanf("%d %d", &processes[i].burst, &processes[i].arrival);
-        processes[i].completed = false;
+        printf("%d\t\t%d\t\t%d\n", processes[i].id, processes[i].burst, processes[i].arrival);
     }
 
     // Perform SPN scheduling

@@ -3,11 +3,6 @@
 
 #define MAX_REQUESTS 100
 
-// Function to sort requests in FCFS order
-void fcfs_sort(int requests[], int num_requests) {
-    // FCFS scheduling does not require sorting
-}
-
 // Function to simulate FCFS disk arm scheduling
 void fcfs_disk_scheduling(int requests[], int num_requests, int initial_position) {
     int current_position = initial_position;
@@ -30,9 +25,6 @@ int main() {
     int requests[MAX_REQUESTS] = { 98, 183, 37, 122, 14, 124, 65, 67};
     int num_requests = 8;
     int initial_position = 53;
-
-    // Sort requests in FCFS order (not needed for FCFS scheduling)
-    fcfs_sort(requests, num_requests);
 
     // Simulate FCFS disk arm scheduling
     fcfs_disk_scheduling(requests, num_requests, initial_position);

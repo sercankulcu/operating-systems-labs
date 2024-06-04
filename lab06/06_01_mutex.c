@@ -6,7 +6,7 @@
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 int shared_variable = 0;
 
-void *thread_function(void *arg);
+void *thread_function();
 
 int main() {
     pthread_t tid1, tid2;
@@ -25,7 +25,7 @@ int main() {
     return 0;
 }
 
-void *thread_function(void *arg) {
+void *thread_function() {
     
     for(int i = 0; i < 10; i++) {
     // Disable interrupts (mutex lock)

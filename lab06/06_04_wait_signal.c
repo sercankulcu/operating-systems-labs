@@ -13,8 +13,8 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t cond_empty = PTHREAD_COND_INITIALIZER;
 pthread_cond_t cond_full = PTHREAD_COND_INITIALIZER;
 
-void *producer(void *arg);
-void *consumer(void *arg);
+void *producer();
+void *consumer();
 
 int main() {
     pthread_t producer_tid, consumer_tid;
@@ -35,7 +35,7 @@ int main() {
     return 0;
 }
 
-void *producer(void *arg) {
+void *producer() {
     for (int i = 0; i < NUM_ITEMS; i++) {
         pthread_mutex_lock(&mutex);
 
@@ -55,7 +55,7 @@ void *producer(void *arg) {
     pthread_exit(NULL);
 }
 
-void *consumer(void *arg) {
+void *consumer() {
     for (int i = 0; i < NUM_ITEMS; i++) {
         pthread_mutex_lock(&mutex);
 

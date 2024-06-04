@@ -4,7 +4,7 @@
 #define MAX_REQUESTS 100
 
 // Function to simulate SCAN disk arm scheduling
-void scan_disk_scheduling(int requests[], int num_requests, int initial_position, int direction, int max_track) {
+void scan_disk_scheduling(int requests[], int num_requests, int initial_position, int direction) {
     int current_position = initial_position;
     int total_head_movement = 0;
     int visited[MAX_REQUESTS] = {0}; // Array to keep track of visited requests
@@ -66,10 +66,8 @@ int main() {
     int num_requests = 8;
     int initial_position = 53;
 
-    int max_track = 200;
-
     // Simulate SCAN disk arm scheduling
-    scan_disk_scheduling(requests, num_requests, initial_position, 1, max_track);
+    scan_disk_scheduling(requests, num_requests, initial_position, 1);
 
     return 0;
 }

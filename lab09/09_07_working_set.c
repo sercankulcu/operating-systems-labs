@@ -48,14 +48,14 @@ int workingSetReplacement(PageTableEntry pageTable[], int numPages, int *current
 }
 
 int main() {
-    int numPages = 4; // Number of pages in memory
+    int numPages = 3; // Number of pages in memory
     PageTableEntry pageTable[numPages];
 
     // Initialize page table
     initializePageTable(pageTable, numPages);
 
     // Simulate page references
-    int referenceString[] = {0, 1, 2, 3, 0, 1, 4, 0, 1, 2};
+    int referenceString[] = {7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2, 1, 2, 0, 1, 7, 0, 1};
     int numReferences = sizeof(referenceString) / sizeof(referenceString[0]);
     int currentTime = 0;
     int currentProcess = 0;

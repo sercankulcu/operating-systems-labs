@@ -57,7 +57,7 @@ void fifoPageReplacement(int *referenceString, int numReferences, int numFrames)
 }
 
 int main() {
-    int referenceString[] = {1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5};
+    int referenceString[] = {7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2, 1, 2, 0, 1, 7, 0, 1};
     int numReferences = sizeof(referenceString) / sizeof(referenceString[0]);
     int numFrames = 3; // Number of frames in memory
 

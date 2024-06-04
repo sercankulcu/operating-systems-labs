@@ -14,8 +14,8 @@ sem_t empty;   // Semaphore to count empty slots in the buffer
 sem_t full;    // Semaphore to count filled slots in the buffer
 pthread_mutex_t mutex; // Mutex for buffer access
 
-void *producer(void *arg);
-void *consumer(void *arg);
+void *producer();
+void *consumer();
 
 int main() {
     pthread_t producer_tid, consumer_tid;
@@ -41,7 +41,7 @@ int main() {
     return 0;
 }
 
-void *producer(void *arg) {
+void *producer() {
     for (int i = 0; i < NUM_ITEMS; i++) {
         sem_wait(&empty); // Wait for an empty slot in the buffer
         pthread_mutex_lock(&mutex);
@@ -58,7 +58,7 @@ void *producer(void *arg) {
     pthread_exit(NULL);
 }
 
-void *consumer(void *arg) {
+void *consumer() {
     for (int i = 0; i < NUM_ITEMS; i++) {
         sem_wait(&full); // Wait for a filled slot in the buffer
         pthread_mutex_lock(&mutex);

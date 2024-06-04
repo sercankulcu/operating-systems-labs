@@ -10,8 +10,8 @@ struct Process {
 // Function to compute waiting time for each process
 void findWaitingTime(struct Process processes[], int n, int wt[]) {
     wt[0] = 0;
-    for (int i = 1; i < n; i++) {
-        wt[i] = processes[i - 1].burst + wt[i - 1];
+    for (int i = 0; i < n-1; i++) {
+        wt[i+1] = processes[i].burst + wt[i] + processes[i].arrival - processes[i+1].arrival;
     }
 }
 
@@ -33,7 +33,7 @@ void findAverageTime(struct Process processes[], int n) {
     findTurnAroundTime(processes, n, wt, tat);
 
     // Display processes along with all details
-    printf("Process\tBurst Time\tArrival Time\tWaiting Time\tTurnaround Time\n");
+    printf("Process\t\tBurst Time\tArrival Time\tWaiting Time\tTurnaround Time\n");
 
     // Calculate total waiting time and turnaround time
     for (int i = 0; i < n; i++) {

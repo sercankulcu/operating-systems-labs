@@ -67,6 +67,14 @@ int main() {
     processes[4].arrival = 5;
     processes[4].completed = 0;
 
+    // Display processes along with all details
+    printf("Process\t\tBurst Time\tArrival Time\n");
+
+    // Calculate total waiting time and turnaround time
+    for (int i = 0; i < n; i++) {
+        printf("%d\t\t%d\t\t%d\n", processes[i].id, processes[i].burst, processes[i].arrival);
+    }
+
     // Perform SJF scheduling
     sjfScheduling(processes, n);
 
