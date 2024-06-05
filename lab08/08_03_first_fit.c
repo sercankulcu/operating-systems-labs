@@ -36,10 +36,12 @@ void *firstFitAllocate(int size) {
                 current->size = size;
             }
             current->isFree = 0;
+            printf("Memory (%d) allocated.\n", size);
             return (void *)(current + 1); // Return pointer to the data area of the block
         }
         current = current->next;
     }
+    printf("Memory (%d) allocation failed.\n", size);
     return NULL; // Memory allocation failed
 }
 
@@ -48,16 +50,18 @@ void deallocate(void *ptr) {
     if (ptr == NULL) return;
     MemoryBlock *block = (MemoryBlock *)ptr - 1;
     block->isFree = 1;
+    printf("Memory (%d) deallocated.\n", block->size);
 }
 
 // Function to display memory blocks
 void displayMemory() {
     MemoryBlock *current = memory;
-    printf("Memory Layout:\n");
+    printf("Memory Layout: ");
     while (current != NULL) {
-        printf("Size: %d, Free: %s\n", current->size, current->isFree ? "Yes" : "No");
+        printf("(%d, %s)", current->size, current->isFree ? "free" : "used");
         current = current->next;
     }
+    printf("\n");
 }
 
 int main() {
@@ -68,6 +72,10 @@ int main() {
     void *ptr1 = firstFitAllocate(20);
     displayMemory();
     void *ptr2 = firstFitAllocate(30);
+    displayMemory();
+    void *ptr3 = firstFitAllocate(40);
+    displayMemory();
+    void *ptr4 = firstFitAllocate(20);
 
     // Display memory layout after allocation
     displayMemory();
@@ -84,6 +92,10 @@ int main() {
     // Display memory layout after deallocation
     displayMemory();
 
+    ptr4 = firstFitAllocate(10);
+    
+    displayMemory();
+    
     // Free memory allocated for memory block
     free(memory);
 

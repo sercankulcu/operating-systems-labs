@@ -49,9 +49,10 @@ void *worstFitAllocate(int size) {
             worstFit->size = size;
         }
         worstFit->isFree = 0;
+        printf("Memory (%d) allocated.\n", size);
         return (void *)(worstFit + 1); // Return pointer to the data area of the block
     }
-
+    printf("Memory (%d) allocation failed.\n", size);
     return NULL; // Memory allocation failed
 }
 
@@ -60,24 +61,32 @@ void deallocate(void *ptr) {
     if (ptr == NULL) return;
     MemoryBlock *block = (MemoryBlock *)ptr - 1;
     block->isFree = 1;
+    printf("Memory (%d) deallocated.\n", block->size);
 }
 
 // Function to display memory blocks
 void displayMemory() {
     MemoryBlock *current = memory;
-    printf("Memory Layout:\n");
+    printf("Memory Layout: ");
     while (current != NULL) {
-        printf("Size: %d, Free: %s\n", current->size, current->isFree ? "Yes" : "No");
+        printf("(%d, %s)", current->size, current->isFree ? "free" : "used");
         current = current->next;
     }
+    printf("\n");
 }
 
 int main() {
     initializeMemory();
     
-    // Allocate memory using worst fit
-    void *ptr1 = worstFitAllocate(20);
-    void *ptr2 = worstFitAllocate(30);
+    displayMemory();
+    // Allocate memory using next fit
+    void *ptr1 = worstFitAllocate(30);
+    displayMemory();
+    void *ptr2 = worstFitAllocate(20);
+    displayMemory();
+    void *ptr3 = worstFitAllocate(40);
+    displayMemory();
+    void *ptr4 = worstFitAllocate(20);
 
     // Display memory layout after allocation
     displayMemory();
@@ -92,6 +101,10 @@ int main() {
     deallocate(ptr2);
     
     // Display memory layout after deallocation
+    displayMemory();
+
+    ptr4 = worstFitAllocate(20);
+    
     displayMemory();
 
     // Free memory allocated for memory block
