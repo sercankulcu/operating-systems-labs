@@ -3,8 +3,8 @@
 #include <pthread.h>
 #include <unistd.h>
 
-void *fifo_thread(void *arg);
-void *rr_thread(void *arg);
+void *fifo_thread();
+void *rr_thread();
 
 int main() {
     pthread_t fifo_tid, rr_tid;
@@ -42,14 +42,14 @@ int main() {
     return 0;
 }
 
-void *fifo_thread(void *arg) {
+void *fifo_thread() {
     printf("FIFO Thread running...\n");
     sleep(3);
     printf("FIFO Thread finished.\n");
     pthread_exit(NULL);
 }
 
-void *rr_thread(void *arg) {
+void *rr_thread() {
     printf("Round Robin Thread running...\n");
     sleep(3);
     printf("Round Robin Thread finished.\n");

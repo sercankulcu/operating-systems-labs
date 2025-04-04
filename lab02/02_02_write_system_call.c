@@ -1,5 +1,7 @@
-#include <unistd.h> // For the write function
-#include <string.h> // For strlen function
+#include <unistd.h>    // For write() system call
+#include <string.h>    // For strlen() function
+#include <stdio.h>     // For perror() function
+#include <stdlib.h>    // For exit() function
 
 int main() {
     char *message = "Hello, world!\n"; // Message to write

@@ -82,9 +82,9 @@ int main() {
     displayMemory();
     void *ptr2 = nextFitAllocate(30);
     displayMemory();
-    void *ptr3 = nextFitAllocate(40);
+    nextFitAllocate(40);
     displayMemory();
-    void *ptr4 = nextFitAllocate(20);
+    nextFitAllocate(20);
 
     // Display memory layout after allocation
     displayMemory();
@@ -101,7 +101,7 @@ int main() {
     // Display memory layout after deallocation
     displayMemory();
 
-    ptr4 = nextFitAllocate(10);
+    nextFitAllocate(10);
     
     displayMemory();
 
@@ -110,7 +110,3 @@ int main() {
 
     return 0;
 }
-
-/* We've modified the nextFitAllocate() function to start searching for a free block from the last allocated block and wrap around to the beginning of memory if necessary.
-The lastAllocated pointer keeps track of the last block allocated, allowing us to implement the next fit strategy.
-*/

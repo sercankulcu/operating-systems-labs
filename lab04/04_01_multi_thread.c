@@ -7,7 +7,9 @@
 // Function executed by each thread
 void *thread_function(void *arg) {
     int thread_id = *((int *)arg);
-    printf("Thread %d: Hello, world!\n", thread_id);
+    for(int i = 0; i < 100; i++) {
+      printf("Thread %d: Hello, world!\n", thread_id);
+    }
     pthread_exit(NULL);
 }
 

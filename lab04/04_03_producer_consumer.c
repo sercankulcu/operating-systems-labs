@@ -15,10 +15,10 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t full = PTHREAD_COND_INITIALIZER;
 pthread_cond_t empty = PTHREAD_COND_INITIALIZER;
 
-void *producer(void *arg) {
+void *producer() {
     int item;
     for (int i = 0; i < NUM_ITEMS; i++) {
-        item = rand() % 100 + (i * 1000); // Generate a random item
+        item = i + (i * 1000); // Generate a random item
         pthread_mutex_lock(&mutex);
         while (count == BUFFER_SIZE) {
             pthread_cond_wait(&full, &mutex); // Wait for the buffer to be not full
@@ -33,7 +33,7 @@ void *producer(void *arg) {
     pthread_exit(NULL);
 }
 
-void *consumer(void *arg) {
+void *consumer() {
     int item;
     for (int i = 0; i < NUM_ITEMS; i++) {
         pthread_mutex_lock(&mutex);

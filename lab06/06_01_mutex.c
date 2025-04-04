@@ -28,19 +28,19 @@ int main() {
 void *thread_function() {
     
     for(int i = 0; i < 10; i++) {
-    // Disable interrupts (mutex lock)
-    pthread_mutex_lock(&mutex);
+      // Disable interrupts (mutex lock)
+      pthread_mutex_lock(&mutex);
 
-    // Critical section
-    printf("Thread ID %ld is in the critical section.\n", pthread_self());
-    shared_variable++;
-    printf("Shared variable incremented by Thread ID %ld: %d\n", pthread_self(), shared_variable);
+      // Critical section
+      printf("Thread ID %ld is in the critical section.\n", pthread_self());
+      shared_variable++;
+      printf("Shared variable incremented by Thread ID %ld: %d\n", pthread_self(), shared_variable);
 
-    // Simulate some work
-//    sleep(1);
+      // Simulate some work
+      // sleep(1);
 
-    // Re-enable interrupts (mutex unlock)
-    pthread_mutex_unlock(&mutex);
+      // Re-enable interrupts (mutex unlock)
+      pthread_mutex_unlock(&mutex);
     }
     pthread_exit(NULL);
 }

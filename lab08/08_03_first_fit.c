@@ -73,9 +73,9 @@ int main() {
     displayMemory();
     void *ptr2 = firstFitAllocate(30);
     displayMemory();
-    void *ptr3 = firstFitAllocate(40);
+    firstFitAllocate(40);
     displayMemory();
-    void *ptr4 = firstFitAllocate(20);
+    firstFitAllocate(20);
 
     // Display memory layout after allocation
     displayMemory();
@@ -92,7 +92,7 @@ int main() {
     // Display memory layout after deallocation
     displayMemory();
 
-    ptr4 = firstFitAllocate(10);
+    firstFitAllocate(10);
     
     displayMemory();
     
@@ -101,7 +101,3 @@ int main() {
 
     return 0;
 }
-
-/* We simulate a simple memory management system with a linked list of memory blocks.
-firstFitAllocate() searches for the first free block that is large enough to hold the requested size using the first fit strategy. If found, it allocates the memory and returns a pointer to the data area of the block. If not found, it returns NULL.
-*/

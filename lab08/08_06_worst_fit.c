@@ -84,9 +84,9 @@ int main() {
     displayMemory();
     void *ptr2 = worstFitAllocate(20);
     displayMemory();
-    void *ptr3 = worstFitAllocate(40);
+    worstFitAllocate(40);
     displayMemory();
-    void *ptr4 = worstFitAllocate(20);
+    worstFitAllocate(20);
 
     // Display memory layout after allocation
     displayMemory();
@@ -103,7 +103,7 @@ int main() {
     // Display memory layout after deallocation
     displayMemory();
 
-    ptr4 = worstFitAllocate(20);
+    worstFitAllocate(20);
     
     displayMemory();
 
@@ -112,7 +112,3 @@ int main() {
 
     return 0;
 }
-
-/* We've implemented the worstFitAllocate() function to search for the worst-fit free block that maximizes internal fragmentation.
-It iterates through the memory blocks, calculates the fragmentation for each free block, and selects the block with the maximum fragmentation that is large enough to hold the requested size.
-*/

@@ -15,6 +15,7 @@ all:
 	$(CC) $(CFLAGS) -o 06_02_strict_alternation 06_02_strict_alternation.o -lpthread
 	$(CC) $(CFLAGS) -o 06_03_busy_waiting 06_03_busy_waiting.o -lpthread
 	$(CC) $(CFLAGS) -o 06_04_wait_signal 06_04_wait_signal.o -lpthread
+	$(CC) $(CFLAGS) -o 06_05_semaphore 06_05_semaphore.o -lpthread
 
 clean:
 	rm -f 06_01_mutex 06_01_mutex.o

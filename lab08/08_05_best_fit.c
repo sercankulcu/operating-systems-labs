@@ -84,9 +84,9 @@ int main() {
     displayMemory();
     void *ptr2 = bestFitAllocate(20);
     displayMemory();
-    void *ptr3 = bestFitAllocate(40);
+    bestFitAllocate(40);
     displayMemory();
-    void *ptr4 = bestFitAllocate(20);
+    bestFitAllocate(20);
 
     // Display memory layout after allocation
     displayMemory();
@@ -103,7 +103,7 @@ int main() {
     // Display memory layout after deallocation
     displayMemory();
 
-    ptr4 = bestFitAllocate(20);
+    bestFitAllocate(20);
     
     displayMemory();
 
@@ -112,7 +112,3 @@ int main() {
 
     return 0;
 }
-
-/* We've implemented the bestFitAllocate() function to search for the best-fit free block that minimizes internal fragmentation.
-It iterates through the memory blocks, calculates the fragmentation for each free block, and selects the block with the minimum fragmentation that is large enough to hold the requested size.
-*/

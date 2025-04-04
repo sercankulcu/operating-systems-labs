@@ -11,8 +11,8 @@ int data = 0; // Shared data
 int readers_count = 0; // Number of readers currently reading
 sem_t mutex, write_mutex; // Semaphores for mutual exclusion
 
-void *reader(void *arg);
-void *writer(void *arg);
+void *reader();
+void *writer();
 
 int main() {
     pthread_t reader_threads[NUM_READERS], writer_threads[NUM_WRITERS];
@@ -48,7 +48,7 @@ int main() {
     return 0;
 }
 
-void *reader(void *arg) {
+void *reader() {
     while (1) {
         // Reader entry section
         sem_wait(&mutex);
@@ -74,7 +74,7 @@ void *reader(void *arg) {
     }
 }
 
-void *writer(void *arg) {
+void *writer() {
     while (1) {
         // Writer entry section
         sem_wait(&write_mutex);

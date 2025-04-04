@@ -65,11 +65,11 @@ void* quick_fit_malloc(size_t size) {
 
     block = quick_lists[index];
     if (block == NULL) {
-        printf("Memory (%d) allocation failed.\n", size);
+        printf("Memory (%zu) allocation failed.\n", size);
         return NULL;
     }
     
-    printf("Memory (%d) allocated.\n", size);
+    printf("Memory (%zu) allocated.\n", size);
     quick_lists[index] = block->next;
     return (void*)(block + 1);
 }
@@ -97,7 +97,7 @@ void quick_fit_free(void* ptr, size_t size) {
 
     block->next = quick_lists[index];
     quick_lists[index] = block;
-    printf("Memory (%d) deallocated.\n", size);
+    printf("Memory (%zu deallocated.\n", size);
 }
 
 // Display memory pool and allocated blocks

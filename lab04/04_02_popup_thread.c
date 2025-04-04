@@ -3,7 +3,7 @@
 #include <pthread.h>
 #include <unistd.h>
 
-void *popup_thread(void *arg) {
+void *popup_thread() {
     // Thread function to handle pop-up event
     printf("Pop-up thread: Pop-up event detected!\n");
     // Simulating pop-up display for 3 seconds

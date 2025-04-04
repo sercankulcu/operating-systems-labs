@@ -36,9 +36,7 @@ void *process(void *arg) {
 
         // Critical section
         enter_critical_section(id);
-
-        // Non-critical section
-        printf("Process %d is in non-critical section\n", id);
+        printf("Process %d exited from critical section\n", id);
     }
     return NULL;
 }
