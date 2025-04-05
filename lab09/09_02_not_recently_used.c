@@ -65,9 +65,19 @@ int notRecentlyUsedReplacement(PageTableEntry pageTable[], int numPages) {
     return victimPage;
 }
 
+// Function to clear all reference bits
+void clearReferenceBits(PageTableEntry pageTable[], int numPages) {
+    for (int i = 0; i < numPages; i++) {
+        pageTable[i].referenced = false;
+    }
+    printf("Reference bits cleared for all pages.\n");
+}
+
 int main() {
     int numPages = 3; // Number of pages in memory
     PageTableEntry pageTable[numPages];
+    const int CLEAR_INTERVAL = 5; // Clear reference bits every 5 references
+    int referenceCount = 0;
 
     // Initialize page table
     initializePageTable(pageTable, numPages);
@@ -85,6 +95,12 @@ int main() {
     int pageFaults = 0;
     for (int i = 0; i < numReferences; i++) {
         int pageNumber = referenceString[i];
+        referenceCount++;
+        
+        // Periodically clear reference bits
+        if (referenceCount % CLEAR_INTERVAL == 0) {
+            clearReferenceBits(pageTable, numPages);
+        }
 
         // Check if page is already in memory
         bool pageFault = true;

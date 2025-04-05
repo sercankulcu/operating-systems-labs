@@ -12,7 +12,7 @@ typedef struct {
 void initializePageTable(Page pageTable[], int numPages) {
     for (int i = 0; i < numPages; i++) {
         pageTable[i].pageNumber = -1;
-        pageTable[i].timestamp = 0;
+        pageTable[i].timestamp = -1; // Use -1 for empty frames
     }
 }
 
@@ -35,9 +35,9 @@ int findLeastRecentlyUsed(Page pageTable[], int numPages) {
 void lruPageReplacement(int referenceString[], int numReferences, int numFrames) {
     int pageFaults = 0;
     Page *pageTable = (Page *)malloc(numFrames * sizeof(Page));
-
-    // Initialize page table
     initializePageTable(pageTable, numFrames);
+
+    int frameCount = 0; // Track filled frames
 
     for (int i = 0; i < numReferences; i++) {
         int pageNumber = referenceString[i];
@@ -55,9 +55,16 @@ void lruPageReplacement(int referenceString[], int numReferences, int numFrames)
         // If page is not in memory, perform page replacement
         if (pageFault) {
             pageFaults++;
-            int lruIndex = findLeastRecentlyUsed(pageTable, numFrames);
-            pageTable[lruIndex].pageNumber = pageNumber;
-            pageTable[lruIndex].timestamp = i + 1; // Update timestamp
+            if (frameCount < numFrames) { // Fill empty frames first
+                pageTable[frameCount].pageNumber = pageNumber;
+                pageTable[frameCount].timestamp = i + 1;
+                frameCount++;
+            } else { // Replace the LRU page
+                int lruIndex = findLeastRecentlyUsed(pageTable, numFrames);
+                printf("Page %d replaced by %d\n", pageTable[lruIndex].pageNumber, pageNumber);
+                pageTable[lruIndex].pageNumber = pageNumber;
+                pageTable[lruIndex].timestamp = i + 1;
+            }
         }
 
         // Print memory status after each memory access
@@ -72,7 +79,6 @@ void lruPageReplacement(int referenceString[], int numReferences, int numFrames)
     }
 
     printf("Total page faults: %d\n", pageFaults);
-
     free(pageTable);
 }
 
@@ -86,4 +92,3 @@ int main() {
 
     return 0;
 }
-

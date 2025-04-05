@@ -73,5 +73,3 @@ int main() {
     return 0;
 }
 
-/*findOptimalPage() function determines the index of the page that will not be used for the longest period of time in the future based on the given reference string.
- * */

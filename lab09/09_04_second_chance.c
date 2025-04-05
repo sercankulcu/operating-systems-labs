@@ -17,16 +17,15 @@ void initializePageTable(PageTableEntry pageTable[], int numPages) {
 }
 
 // Function to perform Second Chance page replacement
-int secondChanceReplacement(PageTableEntry pageTable[], int numPages, int currentIndex) {
+int secondChanceReplacement(PageTableEntry pageTable[], int numPages, int *currentIndex) {
     while (true) {
-        // Check if the current page has the reference bit set
-        if (pageTable[currentIndex].referenced) {
-            // Clear the reference bit and move to the next page
-            pageTable[currentIndex].referenced = false;
-            currentIndex = (currentIndex + 1) % numPages;
+        if (pageTable[*currentIndex].referenced) {
+            pageTable[*currentIndex].referenced = false;
+            *currentIndex = (*currentIndex + 1) % numPages;
         } else {
-            // Return the index of the current page to be replaced
-            return currentIndex;
+            int victimIndex = *currentIndex;
+            *currentIndex = (*currentIndex + 1) % numPages; // Advance after replacement
+            return victimIndex;
         }
     }
 }
@@ -67,10 +66,10 @@ int main() {
         // If page is not in memory, perform page replacement
         if (pageFault) {
             pageFaults++;
-            int indexToReplace = secondChanceReplacement(pageTable, numPages, currentIndex);
+            int indexToReplace = secondChanceReplacement(pageTable, numPages, &currentIndex);
+            printf("Page %d replaced by %d\n", pageTable[indexToReplace].pageNumber, pageNumber);
             pageTable[indexToReplace].pageNumber = pageNumber;
-            pageTable[indexToReplace].referenced = true; // Set reference bit
-            currentIndex = (indexToReplace + 1) % numPages; // Update current index
+            pageTable[indexToReplace].referenced = true;
         }
 
         // Display current page table status
@@ -85,4 +84,3 @@ int main() {
 
     return 0;
 }
-

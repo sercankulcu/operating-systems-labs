@@ -19,14 +19,13 @@ void initializePageTable(PageTableEntry pageTable[], int numPages) {
 // Function to perform Clock page replacement
 int clockReplacement(PageTableEntry pageTable[], int numPages, int *clockHand) {
     while (true) {
-        // Check if the page at the current clock hand position has the reference bit set
-        if (pageTable[*clockHand].referenced) {
-            // Clear the reference bit and move the clock hand to the next page
+        if (!pageTable[*clockHand].referenced) {
+            int victimIndex = *clockHand;
+            *clockHand = (*clockHand + 1) % numPages; // Advance after replacement
+            return victimIndex;
+        } else {
             pageTable[*clockHand].referenced = false;
             *clockHand = (*clockHand + 1) % numPages;
-        } else {
-            // Return the index of the page at the current clock hand position to be replaced
-            return *clockHand;
         }
     }
 }
@@ -68,9 +67,9 @@ int main() {
         if (pageFault) {
             pageFaults++;
             int indexToReplace = clockReplacement(pageTable, numPages, &clockHand);
+            printf("Page %d replaced by %d\n", pageTable[indexToReplace].pageNumber, pageNumber);
             pageTable[indexToReplace].pageNumber = pageNumber;
-            pageTable[indexToReplace].referenced = true; // Set reference bit
-            clockHand = (indexToReplace + 1) % numPages; // Update clock hand
+            pageTable[indexToReplace].referenced = true;
         }
 
         // Display current page table status
@@ -85,4 +84,3 @@ int main() {
 
     return 0;
 }
-

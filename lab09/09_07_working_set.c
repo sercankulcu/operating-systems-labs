@@ -4,44 +4,42 @@
 
 // Page table entry structure
 typedef struct PageTableEntry {
-    int pageNumber; // Page number
-    bool inWorkingSet; // Flag indicating whether the page is in the working set or not
+    int pageNumber;        // Page number
+    int lastReferenced;    // Time of last reference
 } PageTableEntry;
 
 // Function to initialize the page table
 void initializePageTable(PageTableEntry pageTable[], int numPages) {
     for (int i = 0; i < numPages; i++) {
         pageTable[i].pageNumber = -1;
-        pageTable[i].inWorkingSet = false;
+        pageTable[i].lastReferenced = -1; // No reference yet
     }
 }
 
 // Function to perform Working Set page replacement
-int workingSetReplacement(PageTableEntry pageTable[], int numPages, int *currentProcess, int currentTime, int timeWindow) {
+int workingSetReplacement(PageTableEntry pageTable[], int numPages, int currentTime, int timeWindow) {
     int pageToReplace = -1;
 
-    // Find pages belonging to the current process and check if any page is outside the working set
+    // Find a page outside the working set (last referenced before the window)
     for (int i = 0; i < numPages; i++) {
-        if (pageTable[i].pageNumber != -1 && pageTable[i].inWorkingSet && (currentTime - pageTable[i].inWorkingSet) > timeWindow) {
+        if (pageTable[i].pageNumber != -1 && (currentTime - pageTable[i].lastReferenced) > timeWindow) {
             pageToReplace = i;
             break;
         }
     }
 
-    // If no page is outside the working set, find the first page not in the working set
+    // If all pages are within the working set or no page is found, pick the oldest page
     if (pageToReplace == -1) {
+        int oldestTime = currentTime + 1; // Set to a value greater than currentTime
         for (int i = 0; i < numPages; i++) {
-            if (pageTable[i].pageNumber != -1 && !pageTable[i].inWorkingSet) {
+            if (pageTable[i].pageNumber == -1) { // Prefer empty slot
                 pageToReplace = i;
                 break;
+            } else if (pageTable[i].lastReferenced < oldestTime) {
+                oldestTime = pageTable[i].lastReferenced;
+                pageToReplace = i;
             }
         }
-    }
-
-    // If no page is found, use round-robin to select a page to replace
-    if (pageToReplace == -1) {
-        pageToReplace = *currentProcess;
-        *currentProcess = (*currentProcess + 1) % numPages;
     }
 
     return pageToReplace;
@@ -50,6 +48,8 @@ int workingSetReplacement(PageTableEntry pageTable[], int numPages, int *current
 int main() {
     int numPages = 3; // Number of pages in memory
     PageTableEntry pageTable[numPages];
+    int timeWindow = 3; // Working set window size
+    int currentTime = 0;
 
     // Initialize page table
     initializePageTable(pageTable, numPages);
@@ -57,27 +57,23 @@ int main() {
     // Simulate page references
     int referenceString[] = {7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2, 1, 2, 0, 1, 7, 0, 1};
     int numReferences = sizeof(referenceString) / sizeof(referenceString[0]);
-    int currentTime = 0;
-    int currentProcess = 0;
-    int timeWindow = 3; // Time window to define the working set
-
     printf("Reference String: ");
     for (int i = 0; i < numReferences; i++) {
         printf("%d ", referenceString[i]);
     }
     printf("\n");
 
-    printf("\nSimulating Working Set Page Replacement:\n");
+    printf("\nSimulating Working Set Page Replacement (Window = %d):\n", timeWindow);
     int pageFaults = 0;
 
     for (int i = 0; i < numReferences; i++) {
         int pageNumber = referenceString[i];
 
-        // Check if page is already in memory and update its working set information
+        // Check if page is already in memory
         bool pageFound = false;
         for (int j = 0; j < numPages; j++) {
             if (pageTable[j].pageNumber == pageNumber) {
-                pageTable[j].inWorkingSet = true;
+                pageTable[j].lastReferenced = currentTime; // Update last reference time
                 pageFound = true;
                 break;
             }
@@ -86,27 +82,30 @@ int main() {
         // If page is not in memory, perform page replacement
         if (!pageFound) {
             pageFaults++;
-            int pageToReplace = workingSetReplacement(pageTable, numPages, &currentProcess, currentTime, timeWindow);
+            int pageToReplace = workingSetReplacement(pageTable, numPages, currentTime, timeWindow);
+            printf("Page %d replaced by %d\n", 
+                   pageTable[pageToReplace].pageNumber == -1 ? -1 : pageTable[pageToReplace].pageNumber, 
+                   pageNumber);
             pageTable[pageToReplace].pageNumber = pageNumber;
-            pageTable[pageToReplace].inWorkingSet = true;
+            pageTable[pageToReplace].lastReferenced = currentTime;
         }
 
         // Update current time
         currentTime++;
 
-        // Print page table status after each memory access
-        printf("Page Table Status after reference %d: ", pageNumber);
+        // Print page table status
+        printf("Page Table Status after reference %d (t=%d): ", pageNumber, currentTime);
         for (int j = 0; j < numPages; j++) {
-            if (pageTable[j].pageNumber != -1)
-                printf("(%d, WS=%d) ", pageTable[j].pageNumber, pageTable[j].inWorkingSet ? 1 : 0);
-            else
+            if (pageTable[j].pageNumber != -1) {
+                bool inWorkingSet = (currentTime - pageTable[j].lastReferenced) <= timeWindow;
+                printf("(%d, T=%d, WS=%d) ", pageTable[j].pageNumber, pageTable[j].lastReferenced, inWorkingSet);
+            } else {
                 printf("_ ");
+            }
         }
         printf("\n");
     }
 
     printf("Total page faults: %d\n", pageFaults);
-
     return 0;
 }
-
