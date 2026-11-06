@@ -26,7 +26,7 @@ void kasan_denetle(void *a, int boy)
     int8_t s = *(int8_t *)(((uintptr_t)a >> 3)
                            + GOLGE_OFS);
     if (s == 0) return;            /* hizli yol */
-    if ((int)(((uintptr_t)a & 7) + boy - 1) >= s)
+    if ((int)((uintptr_t)a & 7) + boy - 1 >= s)
         rapor(a, s);
 }
 
@@ -83,7 +83,8 @@ int main(void)
  * BUG: KASAN: slab-out-of-bounds p+13
  * kfree(p):      golge = fb fb fc
  * BUG: KASAN: use-after-free p+0
- * Not: sunumdaki "((uintptr_t)a & 7) + boy - 1 >= s" isaretsiz (uintptr_t)
- * karsilastirmadir; s < 0 iken s cok buyuk bir sayiya donusur ve serbest
- * bellek hic raporlanmaz. Burada sol taraf int'e cevrildi.
+ * Not: konum (int) ile cevrildigi icin karsilastirma isaretlidir; negatif
+ * golge (kirmizi bolge ya da serbest) her konumda raporlanir. Cevirme
+ * olmasaydi uintptr_t yuzunden karsilastirma isaretsiz olur ve serbest
+ * bellek hic raporlanmazdi.
  */

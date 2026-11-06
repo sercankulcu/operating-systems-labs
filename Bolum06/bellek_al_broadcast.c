@@ -4,7 +4,6 @@
  * uyumaya devam edecekti. broadcast ikisini de uyandirir, her biri kendi kosulunu
  * yeniden sinar: T2 ilerler, T1 bekler. */
 #include <stdio.h>
-#include <stdlib.h>
 #include <pthread.h>
 #include <time.h>
 
@@ -26,14 +25,13 @@ static void wait_c(pthread_cond_t *k, pthread_mutex_t *x)
 
 int bos = 0;            /* bos bayt */
 
-void *bellek_al(int n)
+void bellek_al(int n)
 {
     lock(&m);
     while (bos < n)
         wait(&c, &m);
     bos -= n;  /* ... ayir */
     unlock(&m);
-    return malloc((size_t)n);      /* slaytta return eksikti */
 }
 
 void bellek_ver(int n)
@@ -47,8 +45,7 @@ void bellek_ver(int n)
 static void *T(void *arg)
 {
     int n = *(int *)arg;
-    void *p = bellek_al(n);
-    free(p);
+    bellek_al(n);
     return NULL;
 }
 

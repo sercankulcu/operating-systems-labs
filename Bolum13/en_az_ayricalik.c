@@ -6,8 +6,6 @@
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -48,13 +46,9 @@ int main(void)
         perror("setresuid");
     kimlikleri_yaz("setresuid sonrasi:");
     /* ... kalan is ... */
-    int fd2 = open("/etc/shadow", O_RDWR);
-    if (fd2 < 0) {
-        printf("open(\"/etc/shadow\"): %s\n", strerror(errno));
-    } else {
-        printf("open(\"/etc/shadow\") basarili: program root olarak calisiyor\n");
-        close(fd2);                                /* hicbir sey yazilmaz */
-    }
+    fd = open("/etc/shadow", O_RDWR);
+    if (fd < 0) perror("open");
+    else close(fd);                                /* hicbir sey yazilmaz */
 
     unlink(golge_yolu);
     return 0;
@@ -63,7 +57,8 @@ int main(void)
 /* Beklenen cikti (sira disi kullanici, ornegin uid 1000):
  * baslangic:             ruid=1000 euid=1000 suid=1000
  * setresuid sonrasi:     ruid=1000 euid=1000 suid=1000
- * open("/etc/shadow"): Permission denied
- * Gercek setuid root kurulumda (chown root, chmod u+s) baslangicta euid=0
- * ve suid=0 olur; setresuid'den sonra ucu de 1000'e iner. Uid degeri ve
- * root olarak calistirmada son satir makineye gore degisir. */
+ * open: Permission denied
+ * Son satir perror ile stderr'e yazilir. Gercek setuid root kurulumda
+ * (chown root, chmod u+s) baslangicta euid=0 ve suid=0 olur; setresuid'den
+ * sonra ucu de 1000'e iner. Uid degeri makineye gore degisir; root olarak
+ * calistirmada open basarili olur ve son satir yazilmaz. */

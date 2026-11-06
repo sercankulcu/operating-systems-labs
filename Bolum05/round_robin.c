@@ -1,6 +1,7 @@
 /* Round Robin (q = 4): bastaki surec en fazla q kadar calisir; bitmediyse
  * kuyrugun sonuna doner. Dilim sirasinda gelenler kesilen surecten ONCE
- * kuyruga eklenir. Cikti: her surecin bitis ani. */
+ * kuyruga eklenir. Kuyruk bosken henuz gelmemis surec varsa CPU bosta
+ * kalir ve saat sonraki gelise ilerletilir. Cikti: her surecin bitis ani. */
 #include <stdio.h>
 
 typedef struct {
@@ -45,7 +46,11 @@ void rr(Surec p[], int n, int q)
 {
     int t = 0, k = 0;     /* k: siradaki */
     gelenleri_ekle(p, n, &k, t);
-    while (!bos()) {
+    while (!bos() || k < n) {
+        if (bos()) {         /* CPU bosta */
+            t = p[k].gelis;  /* sonraki gelis */
+            gelenleri_ekle(p, n, &k, t);
+        }
         Surec *s = cikar();  /* bastaki */
         int dilim = min(q, s->kalan);
         t += dilim; s->kalan -= dilim;

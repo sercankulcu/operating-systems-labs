@@ -5,9 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Linux'taki getrandom(2) sistem cagrisiyla karismasin diye ad degistirilir. */
-#define getrandom ornek_getrandom
-
 typedef struct node_t {
     const char *ad;
     int tickets;
@@ -18,7 +15,7 @@ static const int sabit_cekilis[] = {47, 35, 12};
 static int cekilis_no = 0;
 
 /* [alt, ust) araliginda bir sayi; ilk uc cekilis sabit. */
-static int getrandom(int alt, int ust)
+static int rastgele_al(int alt, int ust)
 {
     if (cekilis_no < 3)
         return sabit_cekilis[cekilis_no++];
@@ -42,7 +39,7 @@ static void dilim(void)
 {
     /* her dilimde bir cekilis */
     int counter = 0;
-    int winner = getrandom(0, totaltickets);
+    int winner = rastgele_al(0, totaltickets);
     node_t *current = head;
     while (current) {
         counter = counter + current->tickets;
