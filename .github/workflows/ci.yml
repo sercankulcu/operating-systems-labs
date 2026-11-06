@@ -1,0 +1,18 @@
+name: build
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  bolum:
+    name: Bolum programlari · ${{ matrix.cc }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        cc: [gcc, clang]
+    env:
+      CC: ${{ matrix.cc }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Derle ve calistir
+        run: sh ci/build.sh
