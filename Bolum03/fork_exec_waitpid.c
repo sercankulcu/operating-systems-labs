@@ -9,14 +9,15 @@
 int main(void)
 {
     pid_t pid = fork();
+    if (pid < 0) { perror("fork"); exit(1); }
     if (pid == 0) {
         execlp("ls", "ls", "-l", NULL);
         perror("execlp");  /* hata */
         exit(1);
     }
     int st;
-    waitpid(pid, &st, 0);
-    printf("bitti: %d\n", WEXITSTATUS(st));
+    if (waitpid(pid, &st, 0) < 0) { perror("waitpid"); exit(1); }
+    if (WIFEXITED(st)) printf("bitti: %d\n", WEXITSTATUS(st));
     return 0;
 }
 
