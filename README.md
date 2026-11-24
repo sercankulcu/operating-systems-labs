@@ -4,6 +4,8 @@ C code for the undergraduate **Operating Systems (İşletim Sistemleri)** course
 
 Course page and slides: <https://sercankulcu.github.io/teaching/operating-systems>
 
+The same programs with English identifiers, comments and output, matching the English edition of the course, are in [operating-systems-labs-en](https://github.com/sercankulcu/operating-systems-labs-en).
+
 The repository has two parts:
 
 - **`BolumNN/`**: the code shown on the slides of chapter NN, as small runnable programs. Function, variable and structure names follow the slides. C-style pseudocode on the slides (`wait`/`signal`, `test_and_set`, `enter_region` …) is completed into working code with pthreads and C11 atomics. Kernel code (`spin_lock`, `kmalloc`, `task_struct`, interrupt handlers …) is shown as a small user-space simulation that keeps the same names.
